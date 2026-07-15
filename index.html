@@ -14,9 +14,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- =======================================================================
-         VIEW: LOGIN PAGE
-         ======================================================================= -->
+    <!-- login page-->
     <div id="login-view">
       <div class="login-card">
         <div class="login-header">
@@ -75,9 +73,7 @@
       </div>
     </div>
 
-    <!-- =======================================================================
-         VIEW: MAIN APPLICATION
-         ======================================================================= -->
+    <!--main-->
     <div id="app-layout" class="hidden">
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
@@ -112,7 +108,7 @@
         </div>
       </aside>
 
-      <!-- Main Content Wrapper -->
+      <!-- Content Wrapper -->
       <main class="main-content">
         <!-- Top Navbar -->
         <header class="topbar">
@@ -122,17 +118,17 @@
           <div style="flex: 1"></div>
           <!-- Spacer -->
           <div class="user-profile">
-            <span id="user-name-display">John Doe</span>
+            <span id="user-name-display">Zavith Ibrahim</span>
             <div class="user-avatar" id="user-avatar-display">JD</div>
           </div>
         </header>
 
-        <!-- Scrollable Content Area -->
+        <!-- Scroll -->
         <div class="content-area">
           <!-- ================== DASHBOARD VIEW ================== -->
           <div id="view-dashboard" class="page-view">
             <div class="page-header">
-              <h2>Welcome back, <span id="welcome-name">User</span>!</h2>
+              <h2>Welcome back,User!</h2>
               <p style="color: #777">
                 Here's what's happening with your store today.
               </p>
@@ -191,7 +187,7 @@
             </div>
           </div>
 
-          <!-- ================== CUSTOMERS VIEW ================== -->
+          <!--customer view-->
           <div id="view-customers" class="page-view hidden">
             <div class="page-header flex-between">
               <h2>Customers</h2>
@@ -243,7 +239,7 @@
             </div>
           </div>
 
-          <!-- ================== ORDERS VIEW ================== -->
+          <!--orders-->
           <div id="view-orders" class="page-view hidden">
             <div class="page-header flex-between">
               <h2>Orders</h2>
@@ -297,7 +293,7 @@
             </div>
           </div>
 
-          <!-- ================== SETTINGS VIEW ================== -->
+          <!--settings-->
           <div id="view-settings" class="page-view hidden">
             <div class="page-header">
               <h2>Settings</h2>
@@ -352,10 +348,25 @@
 
     <!-- Toast Notifications Container -->
     <div id="toast-container"></div>
+    <!-- Customer Details Modal -->
+    <div id="customer-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
 
-    <!-- =======================================================================
-         JAVASCRIPT LOGIC
-         ======================================================================= -->
+        <h2>Customer Details</h2>
+
+        <div class="customer-info">
+          <p><strong>ID:</strong> <span id="modal-id"></span></p>
+          <p><strong>Name:</strong> <span id="modal-name"></span></p>
+          <p><strong>Email:</strong> <span id="modal-email"></span></p>
+          <p><strong>Company:</strong> <span id="modal-company"></span></p>
+          <p><strong>Status:</strong> <span id="modal-status"></span></p>
+        </div>
+
+        <button class="btn btn-primary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+
     <script src="index.js"></script>
   </body>
 </html>

@@ -357,7 +357,7 @@ function renderCustomers() {
                             <td>${c.email}</td>
                             <td>${c.company}</td>
                             <td><span class="${badgeClass}">${c.status}</span></td>
-                            <td><button class="btn btn-outline" onclick="showToast('Viewing ${c.name}')">View</button></td>
+                            <td><button class="btn btn-outline" onclick="viewCustomer('${c.id}')">View</button></td>
                         </tr>
                     `;
     }
@@ -457,6 +457,23 @@ function showToast(message) {
   }, 3000);
 }
 
+function viewCustomer(id) {
+  const customer = customers.find(function (c) {
+    return c.id === id;
+  });
+
+  document.getElementById("modal-id").textContent = customer.id;
+  document.getElementById("modal-name").textContent = customer.name;
+  document.getElementById("modal-email").textContent = customer.email;
+  document.getElementById("modal-company").textContent = customer.company;
+  document.getElementById("modal-status").textContent = customer.status;
+
+  document.getElementById("customer-modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("customer-modal").classList.add("hidden");
+}
 function bindEvents() {
   // Login Form
   document.getElementById("login-form").addEventListener("submit", handleLogin);
@@ -472,6 +489,8 @@ function bindEvents() {
         input.type = "password";
       }
     });
+
+  //toast function
 
   // Search and Filter Events - Run render function whenever user types or selects
   document
