@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaaS CRM Dashboard</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- =======================================================================
+         VIEW: LOGIN PAGE
+         ======================================================================= -->
+    <div id="login-view">
+      <div class="login-card">
+        <div class="login-header">
+          <h2><i class="fas fa-cloud"></i> CloudCRM</h2>
+          <p>Welcome back! Please login to your account.</p>
+        </div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="admin@example.com"
+            />
+            <span id="email-error" class="text-danger hidden"
+              >Please enter a valid email.</span
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              placeholder="Enter password (min 6 chars)"
+            />
+            <i
+              class="fas fa-eye password-toggle"
+              id="toggle-password"
+              title="Show/Hide Password"
+            ></i>
+            <span id="password-error" class="text-danger hidden"
+              >Password must be at least 6 characters.</span
+            >
+          </div>
+
+          <div class="form-group flex-between">
+            <div>
+              <input type="checkbox" id="remember" />
+              <label for="remember" style="display: inline; font-weight: normal"
+                >Remember Me</label
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            Login
+          </button>
+          <div class="text-center mt-2">
+            <small>For demo: Any valid email and 6+ char password works.</small>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         VIEW: MAIN APPLICATION
+         ======================================================================= -->
+    <div id="app-layout" class="hidden">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <span><i class="fas fa-cloud"></i> CloudCRM</span>
+          <button class="mobile-toggle" id="close-sidebar">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <ul class="sidebar-menu">
+          <li onclick="navigate('dashboard')" id="nav-dashboard" class="active">
+            <i class="fas fa-chart-line"></i> Dashboard
+          </li>
+          <li onclick="navigate('customers')" id="nav-customers">
+            <i class="fas fa-users"></i> Customers
+          </li>
+          <li onclick="navigate('orders')" id="nav-orders">
+            <i class="fas fa-shopping-cart"></i> Orders
+          </li>
+          <li onclick="navigate('settings')" id="nav-settings">
+            <i class="fas fa-cog"></i> Settings
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <button
+            onclick="logout()"
+            class="btn btn-outline"
+            style="width: 100%"
+          >
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Wrapper -->
+      <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="topbar">
+          <button class="mobile-toggle" id="open-sidebar">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div style="flex: 1"></div>
+          <!-- Spacer -->
+          <div class="user-profile">
+            <span id="user-name-display">John Doe</span>
+            <div class="user-avatar" id="user-avatar-display">JD</div>
+          </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <div class="content-area">
+          <!-- ================== DASHBOARD VIEW ================== -->
+          <div id="view-dashboard" class="page-view">
+            <div class="page-header">
+              <h2>Welcome back, <span id="welcome-name">User</span>!</h2>
+              <p style="color: #777">
+                Here's what's happening with your store today.
+              </p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+              <div class="card kpi-card">
+                <div class="kpi-info">
+                  <h3>Total Revenue</h3>
+                  <div class="value" id="kpi-revenue">$0</div>
+                </div>
+                <div class="kpi-icon icon-blue">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+              </div>
+              <div class="card kpi-card">
+                <div class="kpi-info">
+                  <h3>Active Customers</h3>
+                  <div class="value" id="kpi-customers">0</div>
+                </div>
+                <div class="kpi-icon icon-green">
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+              <div class="card kpi-card">
+                <div class="kpi-info">
+                  <h3>Total Orders</h3>
+                  <div class="value" id="kpi-orders">0</div>
+                </div>
+                <div class="kpi-icon icon-orange">
+                  <i class="fas fa-shopping-bag"></i>
+                </div>
+              </div>
+              <div class="card kpi-card">
+                <div class="kpi-info">
+                  <h3>Growth</h3>
+                  <div class="value">+12.5%</div>
+                </div>
+                <div class="kpi-icon icon-purple">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+              <div class="card">
+                <h3 class="mb-2">Revenue Overview</h3>
+                <canvas id="revenueChart" height="100"></canvas>
+              </div>
+              <div class="card">
+                <h3 class="mb-2">Order Status</h3>
+                <canvas id="statusChart" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================== CUSTOMERS VIEW ================== -->
+          <div id="view-customers" class="page-view hidden">
+            <div class="page-header flex-between">
+              <h2>Customers</h2>
+              <button class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Customer
+              </button>
+            </div>
+
+            <div class="card">
+              <div class="table-toolbar">
+                <input
+                  type="text"
+                  id="search-customers"
+                  class="form-control"
+                  placeholder="Search customers by name or email..."
+                  style="max-width: 300px"
+                />
+                <select
+                  id="filter-customer-status"
+                  class="form-control"
+                  style="max-width: 200px"
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
+              <div class="table-responsive">
+                <table id="customers-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Company</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-body">
+                    <!-- Rows generated by JS -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination" id="customers-pagination">
+                <!-- Pagination generated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ================== ORDERS VIEW ================== -->
+          <div id="view-orders" class="page-view hidden">
+            <div class="page-header flex-between">
+              <h2>Orders</h2>
+              <button class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Order
+              </button>
+            </div>
+
+            <div class="card">
+              <div class="table-toolbar">
+                <input
+                  type="text"
+                  id="search-orders"
+                  class="form-control"
+                  placeholder="Search by Order ID or Customer..."
+                  style="max-width: 300px"
+                />
+                <select
+                  id="filter-order-status"
+                  class="form-control"
+                  style="max-width: 200px"
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div class="table-responsive">
+                <table id="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="orders-body">
+                    <!-- Rows generated by JS -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination" id="orders-pagination">
+                <!-- Pagination generated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ================== SETTINGS VIEW ================== -->
+          <div id="view-settings" class="page-view hidden">
+            <div class="page-header">
+              <h2>Settings</h2>
+            </div>
+
+            <div class="card" style="max-width: 600px">
+              <form id="settings-form">
+                <div class="form-group">
+                  <label for="set-name">Full Name</label>
+                  <input type="text" id="set-name" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label for="set-email">Email Address</label>
+                  <input type="email" id="set-email" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label for="set-company">Company Name</label>
+                  <input type="text" id="set-company" class="form-control" />
+                </div>
+
+                <div class="form-group flex-between mt-2">
+                  <label for="theme-toggle">Dark Mode</label>
+                  <input
+                    type="checkbox"
+                    id="theme-toggle"
+                    style="transform: scale(1.5)"
+                  />
+                </div>
+
+                <div
+                  class="mt-2"
+                  style="padding-top: 15px; border-top: 1px solid #eaeaea"
+                >
+                  <button type="submit" class="btn btn-primary">
+                    Save Settings
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-reset-settings"
+                    class="btn btn-outline"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- End Content Area -->
+      </main>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- =======================================================================
+         JAVASCRIPT LOGIC
+         ======================================================================= -->
+    <script src="index.js"></script>
+  </body>
+</html>
