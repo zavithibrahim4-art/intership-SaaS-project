@@ -52,7 +52,7 @@ A modern, responsive CRM dashboard built as part of the Dale Edge Industry Inter
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/zavithibrahim4-art/intership-SaaS-project>
 ```
 
 Open the project folder and launch `index.html` using Live Server or any local web server.
